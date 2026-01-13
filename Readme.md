@@ -3,7 +3,7 @@ comment le lancer,
 comment le déployer...
 
 # Quai Antique
-Ce site est un site vitrine pour le restaurant Qaui Antique
+Ce site est un site vitrine pour le restaurant Quai Antique
 
-# IUnstallation
+# Installation
 

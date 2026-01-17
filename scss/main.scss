@@ -7,7 +7,7 @@ html {
 }
 
 main {
-  margin-bottom: 270px;
+  margin-bottom: 300px;
 }
 
 footer.footer {
@@ -16,6 +16,8 @@ footer.footer {
   bottom: 0;
   width: 100%;
 }
+
+
 
 p {
   font-family: $font-family-serif;
@@ -48,4 +50,8 @@ p {
     align-items: center;
     justify-content: center;
   }
+}
+
+.text-justify {
+  text-align: justify;
 }

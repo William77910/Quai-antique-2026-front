@@ -7,7 +7,7 @@ html {
 }
 
 main {
-  margin-bottom: 300px;
+  margin-bottom: 350px;
 }
 
 footer.footer {
@@ -17,7 +17,16 @@ footer.footer {
   width: 100%;
 }
 
-
+footer.row {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
+  flex-direction: column;
+}
 
 p {
   font-family: $font-family-serif;
@@ -54,4 +63,28 @@ p {
 
 .text-justify {
   text-align: justify;
+}
+
+.image-card {
+  position: relative;
+  &:hover {
+    .titre-image {
+      opacity: 1;
+    }
+    img{
+      filter: brightness(0.3);
+    }
+  }
+  img {
+    transition: all 0.3s;
+  }
+
+  .titre-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: all 0.3s;
+  }
 }

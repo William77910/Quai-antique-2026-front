@@ -1,4 +1,4 @@
-<div class="hero-scene text-center text-white">
+<div class="hero-scene text-center text-white"></div>
   <div class="hero-scene-content">
     <h1>Galerie</h1>
   </div>
@@ -6,28 +6,19 @@
 
 <div class="container">
   <div class="text-center">
-    <button
-      type="button"
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#EditionPhotoModal"
-    >
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#EditionPhotoModal">
       Ajouter une photo
     </button>
   </div>
 
   <div class="row row-cols-2 row-cols-lg-3">
+
     <div class="col p-3">
       <div class="image-card text-white">
-        <img
-          class="w-100 rounded"
-          src="../images/semifreddo-4343511_640.jpg"
-          alt="Image du semifreddo"
-        />
+        <img class="w-100 rounded" src="../images/semifreddo-4343511_640.jpg" alt="Image du semifreddo"/>
         <p class="titre-image">Titre</p>
-        <div class="action-image-buttons">
-          <button
-            type="button"
+        <div class="action-image-buttons" data-show="admin">
+          <button type="button"
             class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#EditionPhotoModal">
             <i class="bi bi-pencil-square"></i>
           </button>
@@ -40,44 +31,28 @@
 
     <div class="col p-3">
       <div class="image-card text-white">
-        <img
-          class="w-100 rounded"
-          src="../images/resto.jpg"
-          alt="Image du restaurant"
-        />
+        <img class="w-100 rounded" src="../images/resto.jpg" alt="Image du restaurant"/>
         <p class="titre-image">Titre</p>
       </div>
     </div>
 
     <div class="col p-3">
       <div class="image-card text-white">
-        <img
-          class="w-100 rounded"
-          src="../images/new-years-eve-518032_1280.jpg"
-          alt="Image du nouvel an"
-        />
+        <img class="w-100 rounded" src="../images/new-years-eve-518032_1280.jpg" alt="Image du nouvel an"/>
         <p class="titre-image">Titre</p>
       </div>
     </div>
 
     <div class="col p-3">
       <div class="image-card text-white">
-        <img
-          class="w-100 rounded"
-          src="../images/fondheroscene.jpg"
-          alt="Image de la scène"
-        />
+        <img class="w-100 rounded" src="../images/fondheroscene.jpg" alt="Image de la scène"/>
         <p class="titre-image">Titre</p>
       </div>
     </div>
 
     <div class="col p-3">
       <div class="image-card text-white">
-        <img
-          class="w-100 rounded"
-          src="../images/mossel-dish-7724006_640.jpg"
-          alt="Image du plat de moules"
-        />
+        <img class="w-100 rounded" src="../images/mossel-dish-7724006_640.jpg" alt="Image du plat de moules"/>
         <p class="titre-image">Titre</p>
       </div>
     </div>
@@ -96,37 +71,21 @@
 </div>
 
 <!-- Modal édition -->
-<div
-  class="modal fade"
-  id="EditionPhotoModal"
-  tabindex="-1"
-  aria-labelledby="EditionPhotoModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="EditionPhotoModal" tabindex="-1" aria-labelledby="EditionPhotoModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h2 class="modal-title fs-5" id="EditionPhotoModalLabel">
           Edition Photo
         </h2>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <div class="modal-body">
         <form>
           <div class="mb-3">
             <label for="NamePhotoInput" class="form-label">Titre</label>
-            <input
-              type="text"
-              class="form-control"
-              id="NamePhotoInput"
-              placeholder="Lasagnes à la bolognese"
-            />
+            <input type="text" class="form-control" id="NamePhotoInput" placeholder="Lasagnes à la bolognese"/>
           </div>
           <div class="mb-3">
             <label for="ImageInput" class="form-label">Image</label>
@@ -142,8 +101,7 @@
 </div>
 
 <!-- Modal suppression -->
-<div
-  class="modal fade" id="DeletePhotoModal" tabindex="-1" aria-labelledby="DeletePhotoModalLabel" aria-hidden="true">
+<div class="modal fade" id="DeletePhotoModal" tabindex="-1" aria-labelledby="DeletePhotoModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

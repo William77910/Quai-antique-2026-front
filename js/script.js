@@ -4,50 +4,48 @@
 //Variable pour stocker le cookie de connexion, ici c'est le cookie rentré à la main dans la page singnin.js
 const tokenCookieName = "accesstoken";
 
-
 //Méthode pour placer le token en cookie
-function setToken(token){
+function setToken(token) {
   setCookie(tokenCookieName, token, 7); // Le token sera stocké pendant 7 jours
 }
 //Méthode pour récupérer le token en cookie
-function getToken(){
+function getToken() {
   return getCookie(tokenCookieName);
 }
 
 //Méthode pour placer un cookie
-function setCookie(name,value,days) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+function setCookie(name, value, days) {
+  var expires = "";
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
 //Méthode pour récupérer un cookie
 function getCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-    }
-    return null;
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(";");
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == " ") c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
 }
 
 //Méthode pour supprimer un cookie
-function eraseCookie(name) {   
-    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+function eraseCookie(name) {
+  document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 }
 
 //Fonction pour savoir si l'utilisateur est connecté ou non
-function isConnected(){
-  if(getToken() == null || getToken() == undefined){
+function isConnected() {
+  if (getToken() == null || getToken() == undefined) {
     return false;
-  }
-  else{
+  } else {
     return true;
   }
 }
@@ -70,16 +68,17 @@ const RoleCookieName = "role";
 //Ajouter un écouteur d'évènement au clic sur le bouton déconnexion
 signoutBtn.addEventListener("click", signout);
 //Méthode pour déconnecter l'utilisateur
-function signout(){
+function signout() {
   //Supprimer le cookie de connexion
   eraseCookie(tokenCookieName);
   eraseCookie(RoleCookieName);
   //Rediriger l'utilisateur vers la page d'accueil
-  window.location.replace("/");
+  // Navigation via hash pour rester dans la SPA et éviter le 404 sur /
+  window.location.hash = "#/";
 }
 
 //Récupération du rôle de l'utilisateur
-function getRole(){
+function getRole() {
   return getCookie(RoleCookieName);
 }
 
@@ -91,40 +90,42 @@ connected (admin, client)
 */
 
 //Fonction pour afficher et masquer les éléments selon le rôle
-function showAndHideElementsForRoles(){
+function showAndHideElementsForRoles() {
   //stockage de l'état de connexion de l'utilisateur dans une variable "userConnected"
   const userConnected = isConnected();
   // récupérer le rôle de l'utilisateur
   const role = getRole();
-// récupérer les éléments qui ont l'attribut "data-show"
-  let allElementsToEdit = document.querySelectorAll('[data-show]');
+  // récupérer les éléments qui ont l'attribut "data-show"
+  let allElementsToEdit = document.querySelectorAll("[data-show]");
 
-  allElementsToEdit.forEach(element =>{
-    switch(element.dataset.show){
-      case 'disconnected':
-        if(userConnected){
-          element.classList.add("d-none");  // d-none = display none => class bootstrap
+  allElementsToEdit.forEach((element) => {
+    // reset l'état avant d'appliquer les règles
+    element.classList.remove("d-none");
+
+    switch (element.dataset.show) {
+      case "disconnected":
+        if (userConnected) {
+          element.classList.add("d-none"); // d-none = display none => class bootstrap
         }
         break;
 
-      case 'connected':
-        if(!userConnected){
+      case "connected":
+        if (!userConnected) {
           element.classList.add("d-none");
         }
         break;
 
-      case 'admin':
-        if(!userConnected || role != "admin"){
+      case "admin":
+        if (!userConnected || role != "admin") {
           element.classList.add("d-none");
         }
         break;
 
-      case 'client':
-        if(!userConnected || role != "client"){
+      case "client":
+        if (!userConnected || role != "client") {
           element.classList.add("d-none");
         }
         break;
     }
-  })
-
+  });
 }

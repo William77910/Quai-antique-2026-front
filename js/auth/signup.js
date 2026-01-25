@@ -16,6 +16,8 @@ inputMail.addEventListener("keyup", validateForm);
 inputPassword.addEventListener("keyup", validateForm);
 inputValidationPassword.addEventListener("keyup", validateForm);
 
+btnValidation.addEventListener("click", InscrireUtilisateur);
+
 //FOnction permettant de valider tout le formulaire
 function validateForm(){
   //appel de la fonction validateRequired(ci-dessous)
@@ -102,4 +104,28 @@ function validateConfirmationPassword(inputPwd, inputConfirmPwd){  //Pwd = Passw
         inputConfirmPwd.classList.add("is-invalid");
         return false;
     }
+}
+
+function InscrireUtilisateur(){
+  let myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
+let raw = JSON.stringify({
+  "firstName": "Test 3 fetch",
+  "lastName": "Teste 3 fetch",
+  "email": "test3depuisquaiantique@mail.com",
+  "password": "123"
+});
+
+let requestOptions = {
+  method: "POST",
+  headers: myHeaders,
+  body: raw,
+  redirect: "follow"
+};
+
+fetch("http://127.0.0.1:8000/api/registration", requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
 }

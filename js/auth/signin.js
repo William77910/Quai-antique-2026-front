@@ -3,15 +3,14 @@ const mailInput = document.getElementById("EmailInput");
 const passwordInput = document.getElementById("PasswordInput");
 const btnSignin = document.getElementById("btnSignin");
 
-
 //Ecouteur d'évennement
 btnSignin.addEventListener("click", checkCredentials); // execute la fonction "checkCredentials" au click sur le bouton"
 
-function checkCredentials(){ // cette fonction vérifie le mail et le password
+function checkCredentials() {
+  // cette fonction vérifie le mail et le password
   //Ici, les informations sont factis pour le moment, il faudra appeler l'API pour vérifier les infos en BDD
 
-  if(mailInput.value == "test@mail.com" && passwordInput.value == "123"){
-
+  if (mailInput.value == "test@mail.com" && passwordInput.value == "123") {
     //Récupération du jeton de connexion (token)
     // ici on met un token au hazard pour la simulation
     const token = "oieuyvcfcueoifbeycujehfcenfe";
@@ -22,10 +21,9 @@ function checkCredentials(){ // cette fonction vérifie le mail et le password
     // Ajout d'un cookie pour le rôle
     setCookie(RoleCookieName, "admin", 7);
 
-    //Rediriger l'utilisateur connecté vers la page d'accueil
-    window.location.replace("/");
-  }
-  else{
+    //Rediriger vers l'accueil via le routeur hash (évite un appel HTTP / qui tombe en 404)
+    window.location.hash = "#/";
+  } else {
     mailInput.classList.add("is-invalid");
     passwordInput.classList.add("is-invalid");
   }

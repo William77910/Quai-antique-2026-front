@@ -6,11 +6,10 @@ const inputNom = document.getElementById("NomInput"); // Input pour le nom
 const inputPrenom = document.getElementById("PrenomInput");
 const inputMail = document.getElementById("EmailInput");
 const inputPassword = document.getElementById("PasswordInput");
-const inputValidationPassword = document.getElementById(
-  "ValidatePasswordInput",
-);
+const inputValidationPassword = document.getElementById("ValidatePasswordInput");
 const btnValidation = document.getElementById("btn-validation-inscription");
 const formInscription = document.getElementById("formulaireInscription");
+
 
 //ajouter un écouteur d'évennement au relachement d'une touche
 inputNom.addEventListener("keyup", validateForm); // validateForm est une fonction à créer, elle validera tout le formulaire
@@ -21,17 +20,14 @@ inputValidationPassword.addEventListener("keyup", validateForm);
 
 btnValidation.addEventListener("click", InscrireUtilisateur);
 
-//FOnction permettant de valider tout le formulaire
+//Fonction permettant de valider tout le formulaire
 function validateForm() {
   //appel de la fonction validateRequired(ci-dessous)
   const nomOk = validateRequired(inputNom);
   const prenomOk = validateRequired(inputPrenom);
   const mailOk = validateMail(inputMail);
   const passwordOk = validatePassword(inputPassword);
-  const passwordConfirmOk = validateConfirmationPassword(
-    inputPassword,
-    inputValidationPassword,
-  );
+  const passwordConfirmOk = validateConfirmationPassword(inputPassword, inputValidationPassword);
 
   if (nomOk && prenomOk && mailOk && passwordOk && passwordConfirmOk) {
     btnValidation.disabled = false;
@@ -118,10 +114,10 @@ function InscrireUtilisateur() {
   myHeaders.append("Content-Type", "application/json");
 
   let raw = JSON.stringify({
-    firstName: dataForm.get("nom"),
-    lastName: dataForm.get("prenom"),
-    email: dataForm.get("email"),
-    password: dataForm.get("mdp"),
+    "firstName": dataForm.get("nom"),
+    "lastName": dataForm.get("prenom"),
+    "email": dataForm.get("email"),
+    "password": dataForm.get("mdp"),
   });
 
   let requestOptions = {
@@ -131,7 +127,7 @@ function InscrireUtilisateur() {
     redirect: "follow",
   };
 
-  fetch("http://localhost:8000/api/registration", requestOptions)
+  fetch(apiUrl+"registration", requestOptions)
   // Récuprération de la réponse à la requête
     .then((response) => {
       // si la réponse est "ok"
@@ -140,7 +136,7 @@ function InscrireUtilisateur() {
         return response.json();
         // sinon, message d'erreur
       } else {
-        alert("Erreur lors de l'inscritpon");
+        alert("Erreur lors de l'inscription");
       }
     })
     // si l'inscription à fonctionné

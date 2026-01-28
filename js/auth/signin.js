@@ -4,6 +4,7 @@ function initSignin() {
   const mailInput = document.getElementById("EmailInput");
   const passwordInput = document.getElementById("PasswordInput");
   const btnSignin = document.getElementById("btnSignin");
+  const signinForm = document.getElementById("signinForm");
 
   // Vérifier que les éléments existent avant d'attacher les événements
   if (!btnSignin || !mailInput || !passwordInput) {
@@ -18,9 +19,54 @@ function initSignin() {
 
   function checkCredentials() {
     // cette fonction vérifie le mail et le password
-    //Ici, les informations sont factis pour le moment, il faudra appeler l'API pour vérifier les infos en BDD
+    // transformation de "signinForm en dataForm"
+    let dataForm = new FormData(signinForm);
 
-    if (mailInput.value == "test@mail.com" && passwordInput.value == "123") {
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    let raw = JSON.stringify({
+      //   "firstName": dataForm.get("nom"),
+      //   "lastName": dataForm.get("prenom"),
+      username: dataForm.get("email"),
+      password: dataForm.get("mdp"),
+    });
+
+    let requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(apiUrl+"login", requestOptions)
+      // Récuprération de la réponse à la requête
+      .then((response) => {
+        // si la réponse est "ok"
+        if (response.ok) {
+          // on retourne la réponse du json
+          return response.json();
+          // sinon, message d'erreur
+        } else {
+          mailInput.classList.add("is-invalid");
+          passwordInput.classList.add("is-invalid");
+        }
+      })
+      // si l'inscription à fonctionné
+      .then((result) => {
+        const token = result.apiToken;
+        // placer le token en cookie
+        setToken(token);
+        //placer le role en cookie
+        setCookie(RoleCookieName, result.roles[0], 7);
+        // si ok, on redirige vers la page d'accueil
+        window.location.hash = "#/";
+      })
+      .catch((error) => console.error(error));
+  }
+
+  //Ici, les informations sont factis pour le moment, il faudra appeler l'API pour vérifier les infos en BDD
+  /*if (mailInput.value == "test@mail.com" && passwordInput.value == "123") {
       //Récupération du jeton de connexion (token)
       // ici on met un token au hazard pour la simulation
       const token = "oieuyvcfcueoifbeycujehfcenfe";
@@ -37,8 +83,8 @@ function initSignin() {
       mailInput.classList.add("is-invalid");
       passwordInput.classList.add("is-invalid");
     }
-  }
+  }*/
 }
 
-// Exécuter l'initialisation immédiatement
+// Appeler la fonction d'initialisation quand la page est chargée
 initSignin();

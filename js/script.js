@@ -3,6 +3,7 @@
 // La connexion
 //Variable pour stocker le cookie de connexion, ici c'est le cookie rentré à la main dans la page singnin.js
 const tokenCookieName = "accesstoken";
+const apiUrl = "http://localhost:8000/api/";
 
 //Méthode pour placer le token en cookie
 function setToken(token) {

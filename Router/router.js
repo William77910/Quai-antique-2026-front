@@ -86,7 +86,7 @@ const LoadContentPage = async () => {
     });
   }
 
-  // Changement du titre de la page
+  // Chargement du titre de la page
   document.title = actualRoute.title + " - " + websiteName;
 
   //Afficher ou masquer les éléments en fonction du rôle

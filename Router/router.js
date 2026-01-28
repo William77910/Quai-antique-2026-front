@@ -39,14 +39,16 @@ const LoadContentPage = async () => {
       if (isConnected()) {
         // et on le redirige vers la page accueil
         window.location.hash = "#/";
+        return;
       }
     } else {
       // récupérer le rôle de l'utilisateur dans une variable
       const roleUser = getRole();
       // si le tableau allRolesArray ,e contient pas de rôle
       if (!allRolesArray.includes(roleUser)) {
-        // on redirige l'utilisateur vers la page d'accueil
-        window.location.hash = "#/";
+        // on redirige l'utilisateur vers la page de connexion
+        window.location.hash = "#/signin";
+        return;
       }
     }
   }
@@ -56,15 +58,32 @@ const LoadContentPage = async () => {
   // Ajout du contenu HTML à l'élément avec l'ID "main-page"
   document.getElementById("main-page").innerHTML = html;
 
+  // Supprimer tous les anciens scripts dynamiques pour éviter les doublons
+  const oldScripts = document.querySelectorAll('script[data-dynamic="true"]');
+  oldScripts.forEach((script) => script.remove());
+
   // Ajout du contenu JavaScript
   if (actualRoute.pathJS != "") {
-    // Création d'une balise script
-    var scriptTag = document.createElement("script");
-    scriptTag.setAttribute("type", "text/javascript");
-    scriptTag.setAttribute("src", actualRoute.pathJS);
+    // Attendre un peu pour que le DOM soit prêt, puis charger le script
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        // Création d'une balise script avec un timestamp pour éviter le cache
+        let scriptTag = document.createElement("script");
+        scriptTag.setAttribute("type", "text/javascript");
+        scriptTag.setAttribute(
+          "src",
+          actualRoute.pathJS + "?t=" + new Date().getTime(),
+        );
+        scriptTag.setAttribute("data-dynamic", "true"); // Marqueur pour identifier les scripts dynamiques
 
-    // Ajout de la balise script au corps du document
-    document.querySelector("body").appendChild(scriptTag);
+        // Attendre que le script soit chargé avant de continuer
+        scriptTag.onload = () => resolve();
+        scriptTag.onerror = () => resolve(); // Continuer même en cas d'erreur
+
+        // Ajout de la balise script au corps du document
+        document.querySelector("body").appendChild(scriptTag);
+      }, 50); // Petit délai pour laisser le DOM se stabiliser
+    });
   }
 
   // Changement du titre de la page

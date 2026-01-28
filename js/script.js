@@ -72,9 +72,9 @@ function signout() {
   //Supprimer le cookie de connexion
   eraseCookie(tokenCookieName);
   eraseCookie(RoleCookieName);
-  //Rediriger l'utilisateur vers la page d'accueil
+  //Rediriger l'utilisateur vers la page de connexion
   // Navigation via hash pour rester dans la SPA et éviter le 404 sur /
-  window.location.hash = "#/";
+  window.location.hash = "/signin";
 }
 
 //Récupération du rôle de l'utilisateur

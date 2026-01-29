@@ -29,10 +29,10 @@ function setCookie(name, value, days) {
 function getCookie(name) {
   let nameEQ = name + "=";
   let ca = document.cookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == " ") c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  for (const element of ca) {
+    let c = element;
+    while (c.startsWith(" ")) c = c.substring(1, c.length);
+    if (c.startsWith(nameEQ)) return c.substring(nameEQ.length, c.length);
   }
   return null;
 }
@@ -129,4 +129,15 @@ function showAndHideElementsForRoles() {
         break;
     }
   });
+}
+
+//Fonction pour traiter le texte comme du texte pour éviter les injections html dans les formulaires
+// (comme celui de l'édition de photo par example)
+function sanitizeHtml(text){
+  //création d'une constante qui contiendra une div
+  const tempHtml = document.createElement('div');
+  // le contenu de tempHtml sera du text
+  tempHtml.textContent = text;
+  //nous retournons du text donc si du code est tapé, il sera interprété comme du texte
+  return tempHtml.innerHTML;
 }

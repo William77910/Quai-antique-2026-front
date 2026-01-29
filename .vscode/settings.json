@@ -1,0 +1,13 @@
+{
+  "sonarlint.ls.javaHome": null,
+  "sonarlint.nodeJs.location": "C:\\Program Files\\nodejs\\node.exe",
+  "sonarlint.pathToCompileCommands": null,
+  "sonarlint.pathToGit": "C:\\Program Files\\Git\\bin\\git.exe",
+  "sonarlint.rules": {},
+  "sonarlint.connectedMode.connections.sonarqube": [],
+  "sonarlint.connectedMode.connections.sonarcloud": [],
+  "sonarlint.connectedMode.project": {},
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

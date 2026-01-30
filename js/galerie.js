@@ -10,8 +10,6 @@ let monImage = getImage(titre, imgSource, alt);
 
 galerieImage.innerHTML = monImage;
 
-
-
 function getImage(titre, urlImage, alt) {
   // appel de la fonction de sécurité
   titre = sanitizeHtml(titre);

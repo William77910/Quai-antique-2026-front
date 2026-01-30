@@ -141,3 +141,40 @@ function sanitizeHtml(text){
   //nous retournons du text donc si du code est tapé, il sera interprété comme du texte
   return tempHtml.innerHTML;
 }
+
+//Fonction pour récupérer les infos de l'utilisateur
+function getInfosUser(){
+
+  let myHeaders = new Headers();
+  // Récupérer le token de l'api
+  myHeaders.append("X-AUTH-TOKEN", getToken());
+
+  let requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+  
+  // envoi de la requête
+  fetch(apiUrl+"account/me", requestOptions)
+  // après la réponse
+  .then(response =>{
+    //si réponse ok
+    if(response.ok){
+      //on retourne le json
+      return response.json();
+    }
+    //sinon
+    else{
+      console.log("Impossible de récupérer les informations utilisateur");
+    }
+  })
+  // puis récupérer un result
+  .then(result => {
+    return result;
+  })
+  // s'il y a une erreur, récupérer l'erreur
+  .catch(error =>{
+    console.error("Erreur lors de la récupérations des données utilisateur", error);
+  });
+}

@@ -1,6 +1,7 @@
 {
   "sonarlint.ls.javaHome": null,
   "sonarlint.nodeJs.location": "C:\\Program Files\\nodejs\\node.exe",
+  "sonarlint.pathToNodeExecutable": "C:\\Program Files\\nodejs\\node.exe",
   "sonarlint.pathToCompileCommands": null,
   "sonarlint.pathToGit": "C:\\Program Files\\Git\\bin\\git.exe",
   "sonarlint.rules": {},

@@ -4,6 +4,7 @@ function initAccountPage(tryCount = 0) {
 	const prenomInput = document.getElementById("PrenomInput");
 	const allergieInput = document.getElementById("AllergieInput");
 	const nbConvivesInput = document.getElementById("NbConvivesInput");
+	const deleteAccountBtn = document.getElementById("deleteAccountBtn");
 	const accountStatus = document.getElementById("accountStatus");
 	const accountApiInfo = document.getElementById("accountApiInfo");
 
@@ -12,7 +13,8 @@ function initAccountPage(tryCount = 0) {
 		!nomInput ||
 		!prenomInput ||
 		!allergieInput ||
-		!nbConvivesInput
+		!nbConvivesInput ||
+		!deleteAccountBtn
 	) {
 		if (tryCount < 10) {
 			setTimeout(() => initAccountPage(tryCount + 1), 30);
@@ -95,6 +97,49 @@ function initAccountPage(tryCount = 0) {
 		} catch (error) {
 			console.error(error);
 			setStatus("Erreur réseau pendant l'enregistrement.", "error");
+		}
+	});
+
+	deleteAccountBtn.addEventListener("click", async () => {
+		const confirmed = globalThis.confirm("Voulez-vous vraiment supprimer votre compte ? Cette action est definitive.");
+		if (!confirmed) {
+			return;
+		}
+
+		const token = getToken();
+		if (!token) {
+			setStatus("Session expirée. Reconnectez-vous.", "error");
+			return;
+		}
+
+		setStatus("Suppression du compte en cours...", "info");
+		deleteAccountBtn.disabled = true;
+
+		try {
+			const response = await fetch((globalThis.apiUrl || "") + "account/delete", {
+				method: "DELETE",
+				headers: {
+					"X-AUTH-TOKEN": token,
+				},
+			});
+
+			if (!response.ok) {
+				setStatus("Échec de la suppression du compte.", "error");
+				deleteAccountBtn.disabled = false;
+				return;
+			}
+
+			setStatus("Compte supprimé. Redirection...", "success");
+			if (typeof signout === "function") {
+				signout();
+				return;
+			}
+
+			globalThis.location.hash = "/signin";
+		} catch (error) {
+			console.error(error);
+			setStatus("Erreur réseau pendant la suppression du compte.", "error");
+			deleteAccountBtn.disabled = false;
 		}
 	});
 }

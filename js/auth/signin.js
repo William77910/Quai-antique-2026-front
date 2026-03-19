@@ -81,7 +81,7 @@ function initSignin() {
       if (contentType.includes("text/html")) {
         // Cas typique: une ancienne valeur localStorage pointe vers le serveur front
         if (!alreadyRetried && localStorage.getItem("apiUrl")) {
-          const fallbackApiUrl = globalThis.defaultApiUrl || "http://localhost:8000/api/";
+          const fallbackApiUrl = globalThis.defaultApiUrl;
           localStorage.removeItem("apiUrl");
           globalThis.apiUrl = fallbackApiUrl;
           setApiStatus(

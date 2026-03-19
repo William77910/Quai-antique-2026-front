@@ -3,8 +3,12 @@
 // La connexion
 //Variable pour stocker le cookie de connexion, ici c'est le cookie rentré à la main dans la page singnin.js
 const tokenCookieName = "accesstoken";
-const defaultApiUrl = "http://localhost:8000/api/";
-const apiUrl = localStorage.getItem("apiUrl") || defaultApiUrl;
+const isAlwaysdataHost = window.location.hostname === "quaiantique2026.alwaysdata.net";
+const defaultApiUrl = isAlwaysdataHost
+  ? "https://quaiantique2026.alwaysdata.net/api/api/"
+  : "http://localhost:8000/api/";
+const configuredApiUrl = localStorage.getItem("apiUrl") || defaultApiUrl;
+const apiUrl = configuredApiUrl.endsWith("/") ? configuredApiUrl : `${configuredApiUrl}/`;
 globalThis.defaultApiUrl = defaultApiUrl;
 globalThis.apiUrl = apiUrl;
 

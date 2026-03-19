@@ -54,6 +54,24 @@ function initSignin() {
     signinApiStatus.textContent = message;
   };
 
+  const resolveRoleForCookie = (roles) => {
+    if (!Array.isArray(roles) || roles.length === 0) {
+      return null;
+    }
+
+    const normalizedRoles = new Set(roles.map((role) => String(role).trim().toUpperCase()));
+
+    if (normalizedRoles.has("ROLE_ADMIN") || normalizedRoles.has("ADMIN")) {
+      return "ROLE_ADMIN";
+    }
+
+    if (normalizedRoles.has("ROLE_USER") || normalizedRoles.has("CLIENT") || normalizedRoles.has("USER")) {
+      return "ROLE_USER";
+    }
+
+    return String(roles[0]);
+  };
+
   const checkApiAvailability = async (alreadyRetried = false) => {
     const apiBaseUrl = globalThis.apiUrl;
     if (!apiBaseUrl) {
@@ -199,7 +217,10 @@ function initSignin() {
 
       //placer le role en cookie si fourni
       if (Array.isArray(result?.roles) && result.roles.length > 0) {
-        setCookie(roleCookieName || "role", result.roles[0], 7);
+        const resolvedRole = resolveRoleForCookie(result.roles);
+        if (resolvedRole) {
+          setCookie(roleCookieName || "role", resolvedRole, 7);
+        }
       }
 
       // si ok, on redirige vers la page d'accueil

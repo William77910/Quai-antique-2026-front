@@ -39,16 +39,7 @@ function validateForm() {
 //fonction qui valide un champs requis
 function validateRequired(input) {
   //si la valeur de l'input est différente d'un champs vide
-  if (input.value != "") {
-    //C'est ok
-    //Ajout de la classe Bootstrap qui valide l'input
-    input.classList.add("is-valid");
-    //Ajout de la classe Bootstrap qui annule "l'invalidation"
-    input.classList.remove("is-invalid");
-    return true;
-  }
-  //sinon
-  else {
+  if (input.value === "") {
     //C'est pas ok
     //Ajout de la classe Bootstrap qui invalide l'input
     input.classList.remove("is-valid");
@@ -56,6 +47,13 @@ function validateRequired(input) {
     input.classList.add("is-invalid");
     return false;
   }
+
+  //C'est ok
+  //Ajout de la classe Bootstrap qui valide l'input
+  input.classList.add("is-valid");
+  //Ajout de la classe Bootstrap qui annule "l'invalidation"
+  input.classList.remove("is-invalid");
+  return true;
 }
 
 //Fonction pour valider le mail
@@ -114,10 +112,11 @@ function InscrireUtilisateur() {
   myHeaders.append("Content-Type", "application/json");
 
   let raw = JSON.stringify({
-    "firstName": dataForm.get("nom"),
-    "lastName": dataForm.get("prenom"),
+    "firstName": dataForm.get("prenom"),
+    "lastName": dataForm.get("nom"),
     "email": dataForm.get("email"),
     "password": dataForm.get("mdp"),
+    "guestNumber": 1,
   });
 
   let requestOptions = {
@@ -129,21 +128,25 @@ function InscrireUtilisateur() {
 
   fetch(apiUrl+"registration", requestOptions)
   // Récuprération de la réponse à la requête
-    .then((response) => {
-      // si la réponse est "ok"
-      if (response.ok) {
-        // on retourne la réponse du json
-        return response.json();
-        // sinon, message d'erreur
-      } else {
-        alert("Erreur lors de l'inscription");
+    .then(async (response) => {
+      // En cas d'erreur, on remonte le message backend pour faciliter le debug en prod.
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || `Erreur HTTP ${response.status}`);
       }
+
+      return response.json();
     })
     // si l'inscription à fonctionné
     .then(result => {
-      alert("Bravo "+dataForm.get("prenom")+ " vous êtes bien inscrit, vous pouvez vous connecter.");
+      const firstNameValue = dataForm.get("prenom");
+      const firstName = typeof firstNameValue === "string" ? firstNameValue : "";
+      alert("Bravo " + firstName + " vous êtes bien inscrit, vous pouvez vous connecter.");
       // on redirige l'utilisateur vers lapage de connexion
-      window.location.hash = "/signin";
+      globalThis.location.hash = "/signin";
 })
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      console.error(error);
+      alert("Erreur lors de l'inscription : " + error.message);
+    });
 }

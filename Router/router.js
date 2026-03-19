@@ -4,6 +4,30 @@ import { allRoutes, websiteName } from "./allRoutes.js";
 // Création d'une route pour la page 404 (page introuvable)
 const route404 = new Route("404", "Page introuvable", "pages/404.html", []);
 
+const resolveRoleFromApiRoles = (roles) => {
+  if (!Array.isArray(roles) || roles.length === 0) {
+    return null;
+  }
+
+  const normalizedRoles = new Set(
+    roles.map((role) => String(role).trim().toUpperCase()),
+  );
+
+  if (normalizedRoles.has("ROLE_ADMIN") || normalizedRoles.has("ADMIN")) {
+    return "ROLE_ADMIN";
+  }
+
+  if (
+    normalizedRoles.has("ROLE_USER") ||
+    normalizedRoles.has("CLIENT") ||
+    normalizedRoles.has("USER")
+  ) {
+    return "ROLE_USER";
+  }
+
+  return String(roles[0]);
+};
+
 // Fonction pour récupérer la route correspondant à une URL donnée
 const getRouteByUrl = (url) => {
   let currentRoute = null;
@@ -54,12 +78,32 @@ const LoadContentPage = async () => {
       }
     } else {
       // récupérer le rôle de l'utilisateur dans une variable
-      const roleUser = getRole();
+      let roleUser = getRole();
       // si le tableau allRolesArray ,e contient pas de rôle
       if (!allRolesArray.includes(roleUser)) {
+        // Fallback: le cookie role peut être obsolète, on resynchronise via /account/me.
+        if (isConnected() && typeof getInfosUser === "function") {
+          try {
+            const user = await getInfosUser();
+            const resolvedRole = resolveRoleFromApiRoles(user?.roles || []);
+            if (resolvedRole && typeof setCookie === "function") {
+              const roleCookieName = globalThis.RoleCookieName || "role";
+              setCookie(roleCookieName, resolvedRole, 7);
+              roleUser = resolvedRole;
+              showAndHideElementsForRoles();
+            }
+          } catch (error) {
+            console.error("Impossible de resynchroniser le rôle depuis l'API", error);
+          }
+        }
+
+        if (allRolesArray.includes(roleUser)) {
+          // Le rôle est désormais à jour, on laisse passer.
+        } else {
         // on redirige l'utilisateur vers la page de connexion
-        window.location.hash = "#/signin";
-        return;
+          window.location.hash = "#/signin";
+          return;
+        }
       }
     }
   }

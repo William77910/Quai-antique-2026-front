@@ -14,16 +14,17 @@ const formInscription = document.getElementById("formulaireInscription");
 
 
 //ajouter un écouteur d'évennement au relachement d'une touche
-inputNom.addEventListener("keyup", validateForm); // validateForm est une fonction à créer, elle validera tout le formulaire
-inputPrenom.addEventListener("keyup", validateForm);
-inputMail.addEventListener("keyup", validateForm);
-inputGuestNumber.addEventListener("keyup", validateForm);
+inputNom.addEventListener("input", validateForm); // validateForm est une fonction à créer, elle validera tout le formulaire
+inputPrenom.addEventListener("input", validateForm);
+inputMail.addEventListener("input", validateForm);
+inputGuestNumber.addEventListener("input", validateForm);
 inputGuestNumber.addEventListener("change", validateForm);
-inputAllergy.addEventListener("keyup", validateForm);
-inputPassword.addEventListener("keyup", validateForm);
-inputValidationPassword.addEventListener("keyup", validateForm);
+inputAllergy.addEventListener("input", validateForm);
+inputPassword.addEventListener("input", validateForm);
+inputValidationPassword.addEventListener("input", validateForm);
 
 btnValidation.addEventListener("click", InscrireUtilisateur);
+validateForm();
 
 //Fonction permettant de valider tout le formulaire
 function validateForm() {
@@ -35,11 +36,9 @@ function validateForm() {
   const passwordOk = validatePassword(inputPassword);
   const passwordConfirmOk = validateConfirmationPassword(inputPassword, inputValidationPassword);
 
-  if (nomOk && prenomOk && mailOk && guestNumberOk && passwordOk && passwordConfirmOk) {
-    btnValidation.disabled = false;
-  } else {
-    btnValidation.disabled = true;
-  }
+  const formIsValid = nomOk && prenomOk && mailOk && guestNumberOk && passwordOk && passwordConfirmOk;
+  btnValidation.disabled = !formIsValid;
+  return formIsValid;
 }
 
 //fonction qui valide un champs requis
@@ -125,6 +124,11 @@ function validateConfirmationPassword(inputPwd, inputConfirmPwd) {
 }
 
 function InscrireUtilisateur() {
+  if (!validateForm()) {
+    alert("Veuillez remplir correctement tous les champs obligatoires.");
+    return;
+  }
+
   //Récupérer les données de "formInscritpion" dans une variable "dataForm"
   let dataForm = new FormData(formInscription);
   const guestNumberValue = dataForm.get("guestNumber");

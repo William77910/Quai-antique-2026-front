@@ -12,7 +12,7 @@
         type="text"
         class="form-control"
         id="NomInput"
-        placeholder="Entrez votre nom"  name="nom"
+        placeholder="Entrez votre nom"  name="nom" required
       />
       <div class="invalid-feedback">Le nom est requis</div>
     </div>
@@ -22,7 +22,7 @@
         type="text"
         class="form-control"
         id="PrenomInput"
-        placeholder="Entrez votre prénom" name="prenom"
+        placeholder="Entrez votre prénom" name="prenom" required
       />
       <div class="invalid-feedback">Le prénom est requis</div>
     </div>
@@ -32,7 +32,7 @@
         type="email"
         class="form-control"
         id="EmailInput"
-        placeholder="test@mail.fr" name="email"
+        placeholder="test@mail.fr" name="email" required
       />
       <div class="invalid-feedback">Le mail n'est pas au bon format</div>
     </div>
@@ -45,6 +45,7 @@
         placeholder="Ex: 2"
         name="guestNumber"
         min="1"
+        required
       />
       <div class="invalid-feedback">Le nombre de couverts doit etre superieur ou egal a 1</div>
     </div>
@@ -64,7 +65,7 @@
         type="password"
         class="form-control"
         id="PasswordInput"
-        placeholder="Entrez votre mot de passe" name="mdp"
+        placeholder="Entrez votre mot de passe" name="mdp" required
       />
       <div class="invalid-feedback">
         Le mot de passe n'est pas assez robuste : Au moins 8 carractères,
@@ -77,14 +78,14 @@
       <label for="ValidatePasswordInput" class="form-label"
         >Confirmer votre mot de passe</label
       >
-      <input type="password" class="form-control" id="ValidatePasswordInput" />
+      <input type="password" class="form-control" id="ValidatePasswordInput" required />
       <div class="invalid-feedback">
         La confirmation n'est pas identique au mot de passe
       </div>
     </div>
 
     <div class="text-center">
-      <button type="button" class="btn btn-primary" id="btn-validation-inscription">Inscription</button>
+      <button type="button" class="btn btn-primary" id="btn-validation-inscription" disabled>Inscription</button>
     </div>
   </form>
   <div class="text-center pt-3">

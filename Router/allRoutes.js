@@ -4,13 +4,16 @@ import Route from "./Route.js";
 export const allRoutes = [
     new Route("/", "Accueil", "pages/home.html",[]),
     new Route("/Galerie", "La Galerie", "pages/galerie.html", [], "js/galerie.js"),
+    new Route("/galerie", "La Galerie", "pages/galerie.html", [], "js/galerie.js"),
     new Route("/signin", "Connexion", "pages/auth/signin.html", ["disconnected"], "js/auth/signin.js"),
     new Route("/signup", "Inscription", "pages/auth/signup.html", ["disconnected"], "js/auth/signup.js"),
     new Route("/mentionslegales", "Mentions Legales", "pages/mentionslegales.html", []),
-    new Route("/account", "Mon compte", "pages/auth/account.html", ["client", "admin"]),
-    new Route("/editPassword", "Changement de mot de passe", "pages/auth/editPassword.html", ["client", "admin"], "js/auth/editPassword.js"),
-    new Route("/allResa", "Vos réservations", "pages/reservations/allResa.html", ["client", "admin"], "js/reservations/allResa.js"),
-    new Route("/reserver", "Réserver", "pages/reservations/reserver.html", ["client", "admin"], "js/reservations/reserver.js"),
+    new Route("/carte", "La carte", "pages/carte.html", []),
+    new Route("/account", "Mon compte", "pages/auth/account.html", ["ROLE_USER", "ROLE_ADMIN", "client", "admin"], "js/auth/account.js"),
+    new Route("/editPassword", "Changement de mot de passe", "pages/auth/editPassword.html", ["ROLE_USER", "ROLE_ADMIN", "client", "admin"], "js/auth/editPassword.js"),
+    new Route("/allResa", "Vos réservations", "pages/reservations/allResa.html", ["ROLE_USER", "ROLE_ADMIN", "client", "admin"], "js/reservations/allResa.js"),
+    new Route("/reserver", "Réserver", "pages/reservations/reserver.html", ["ROLE_USER", "ROLE_ADMIN", "client", "admin"], "js/reservations/reserver.js"),
+    new Route("/admin", "Administration", "pages/admin.html", ["ROLE_ADMIN"], "js/admin.js"),
 ];
 
 /** Cas d'autorisation d'accès

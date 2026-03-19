@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration</title>
+</head>
+<body>
+    <div class="container mt-5" id="adminPageRoot">
+        <h1 class="mb-4">🔐 Panneau d'Administration</h1>
+        
+        <div class="alert alert-warning" role="alert">
+            <strong>⚠️ Accès Administrateur Requis</strong>
+            <p>Cette page est reservée aux utilisateurs avec le rôle ROLE_ADMIN.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Informations Utilisateur</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Email:</strong> <span id="adminEmail">-</span></p>
+                        <p><strong>Prénom:</strong> <span id="adminFirstname">-</span></p>
+                        <p><strong>Nom:</strong> <span id="adminLastname">-</span></p>
+                        <p><strong>Rôles:</strong> <span id="adminRoles">-</span></p>
+                        <p><strong>Créé le:</strong> <span id="adminCreatedAt">-</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Statistiques Système</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>API Base URL:</strong> <code id="apiBaseUrl">-</code></p>
+                        <p><strong>Token Présent:</strong> <span id="tokenStatus">-</span></p>
+                        <p><strong>Navigateur:</strong> <span id="browserInfo">-</span></p>
+                        <p><strong>Date/Heure:</strong> <span id="currentTime">-</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">🧪 Vérification des Accès</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group" id="accessChecks">
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>Accès à la page Mon Compte</span>
+                            <span id="access-account" class="badge">-</span>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>Accès aux Réservations</span>
+                            <span id="access-reservations" class="badge">-</span>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>Accès à l'Administration</span>
+                            <span id="access-admin" class="badge bg-success">✅ Accordé</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">📅 Gestion des Réservations</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-2 mb-3">
+                    <div class="col-md-4">
+                        <label for="filterName" class="form-label">Filtrer par nom</label>
+                        <input type="text" class="form-control" id="filterName" placeholder="Filtrer par nom/prénom" />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="filterDate" class="form-label">Filtrer par date</label>
+                        <input type="date" class="form-control" id="filterDate" />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="filterService" class="form-label">Filtrer par service</label>
+                        <select class="form-select" id="filterService">
+                            <option value="">Tous les services</option>
+                            <option value="Midi">Midi</option>
+                            <option value="Soir">Soir</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-grid">
+                        <button class="btn btn-outline-secondary" id="clearFiltersBtn">Réinitialiser</button>
+                    </div>
+                </div>
+
+                <p id="adminResaStatus" class="text-muted mb-2">Chargement des réservations...</p>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Client</th>
+                                <th>Date</th>
+                                <th>Service</th>
+                                <th>Heure</th>
+                                <th>Convives</th>
+                                <th>Allergie</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminReservationsBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">👥 Gestion des Comptes Utilisateurs</h5>
+            </div>
+            <div class="card-body">
+                <p id="adminUsersStatus" class="text-muted mb-2">Chargement des comptes...</p>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Nom</th>
+                                <th>Rôles</th>
+                                <th>Convives</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminUsersBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">🍽️ Gestion de la Carte</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex gap-2 mb-3">
+                    <button class="btn btn-outline-primary" id="addFoodBtn">Ajouter un plat</button>
+                    <button class="btn btn-outline-primary" id="addCategoryBtn">Ajouter une catégorie</button>
+                </div>
+
+                <p id="adminMenuStatus" class="text-muted mb-2">Chargement de la carte...</p>
+
+                <h6>Plats</h6>
+                <div class="table-responsive mb-4">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Titre</th>
+                                <th>Description</th>
+                                <th>Prix</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminFoodBody"></tbody>
+                    </table>
+                </div>
+
+                <h6>Catégories</h6>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Titre</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminCategoryBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">⚙️ Actions Administrateur</h5>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-outline-danger" id="logoutBtn">Se Déconnecter</button>
+                <button class="btn btn-outline-secondary" id="backBtn">Retour à l'Accueil</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+            font-family: 'Hind Madurai', sans-serif;
+        }
+        .card {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            font-weight: 600;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .list-group-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .badge {
+            font-size: 0.85em;
+            padding: 6px 12px;
+        }
+    </style>
+
+</body>
+</html>

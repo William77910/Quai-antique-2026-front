@@ -1,14 +1,23 @@
-const galerieImage = document.getElementById("allImages");
+function initGalerie(tryCount = 0) {
+  const galerieImage = document.getElementById("allImages");
 
-//Récupérer les informations des images
-let titre = "titre";
-let imgSource = "./images/semifreddo-4343511_640.jpg";
-let alt = "Semifreddo";
+  if (!galerieImage) {
+    if (tryCount < 10) {
+      // En navigation SPA, le conteneur peut arriver juste après le script.
+      setTimeout(() => initGalerie(tryCount + 1), 30);
+    }
+    return;
+  }
 
-//Création d'une varaible pour stocker les infos de l'image
-let monImage = getImage(titre, imgSource, alt);
+  //Récupérer les informations des images
+  let titre = "titre";
+  let imgSource = "images/semifreddo-4343511_640.jpg";
+  let alt = "Semifreddo";
 
-galerieImage.innerHTML = monImage;
+  //Création d'une varaible pour stocker les infos de l'image
+  let monImage = getImage(titre, imgSource, alt);
+  galerieImage.innerHTML = monImage;
+}
 
 function getImage(titre, urlImage, alt) {
   // appel de la fonction de sécurité
@@ -32,3 +41,5 @@ function getImage(titre, urlImage, alt) {
       </div>
     </div>`;
 }
+
+  initGalerie();

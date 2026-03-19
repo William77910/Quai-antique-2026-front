@@ -27,8 +27,14 @@
         Connexion
       </button>
     </div>
+    <p id="signinApiStatus" class="small text-center mt-2 text-muted" aria-live="polite"></p>
+    <p id="signinError" class="text-danger text-center mt-3 d-none" aria-live="polite"></p>
   </form>
   <div class="text-center pt-3">
     <a href="#/signup">Pas encore de compte ? Inscrivez-vous ici !</a>
   </div>
 </div>
+
+<!-- Fallback si la page est ouverte directement sans le routeur SPA -->
+<script src="../../js/script.js"></script>
+<script src="../../js/auth/signin.js"></script>

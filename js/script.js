@@ -3,7 +3,10 @@
 // La connexion
 //Variable pour stocker le cookie de connexion, ici c'est le cookie rentré à la main dans la page singnin.js
 const tokenCookieName = "accesstoken";
-const apiUrl = "http://localhost:8000/api/";
+const defaultApiUrl = "http://localhost:8000/api/";
+const apiUrl = localStorage.getItem("apiUrl") || defaultApiUrl;
+globalThis.defaultApiUrl = defaultApiUrl;
+globalThis.apiUrl = apiUrl;
 
 //Méthode pour placer le token en cookie
 function setToken(token) {
@@ -66,6 +69,7 @@ else{
 const signoutBtn = document.getElementById("signout-btn");
 //Recupérer le cookie du rôle
 const RoleCookieName = "role";
+globalThis.RoleCookieName = RoleCookieName;
 //Ajouter un écouteur d'évènement au clic sur le bouton déconnexion
 signoutBtn.addEventListener("click", signout);
 //Méthode pour déconnecter l'utilisateur
@@ -117,13 +121,13 @@ function showAndHideElementsForRoles() {
         break;
 
       case "admin":
-        if (!userConnected || role != "admin") {
+        if (!userConnected || (role != "admin" && role != "ROLE_ADMIN")) {
           element.classList.add("d-none");
         }
         break;
 
       case "client":
-        if (!userConnected || role != "client") {
+        if (!userConnected || (role != "client" && role != "ROLE_USER")) {
           element.classList.add("d-none");
         }
         break;
@@ -143,7 +147,7 @@ function sanitizeHtml(text){
 }
 
 //Fonction pour récupérer les infos de l'utilisateur
-function getInfosUser(){
+async function getInfosUser(){
 
   let myHeaders = new Headers();
   // Récupérer le token de l'api
@@ -156,25 +160,16 @@ function getInfosUser(){
     };
   
   // envoi de la requête
-  fetch(apiUrl+"account/me", requestOptions)
-  // après la réponse
-  .then(response =>{
-    //si réponse ok
-    if(response.ok){
-      //on retourne le json
-      return response.json();
-    }
-    //sinon
-    else{
+  try {
+    const response = await fetch(apiUrl + "account/me", requestOptions);
+    if (!response.ok) {
       console.log("Impossible de récupérer les informations utilisateur");
+      return null;
     }
-  })
-  // puis récupérer un result
-  .then(result => {
-    return result;
-  })
-  // s'il y a une erreur, récupérer l'erreur
-  .catch(error =>{
+
+    return await response.json();
+  } catch (error) {
     console.error("Erreur lors de la récupérations des données utilisateur", error);
-  });
+    return null;
+  }
 }

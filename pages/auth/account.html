@@ -5,7 +5,10 @@
 </div>
 
 <div class="container">
-  <form>
+  <p id="accountApiInfo" class="small text-muted text-center"></p>
+  <p id="accountStatus" class="text-center d-none" aria-live="polite"></p>
+
+  <form id="accountForm">
     <div class="mb-3">
       <label for="NomInput" class="form-label">Nom</label>
       <input
@@ -13,7 +16,6 @@
         class="form-control"
         id="NomInput"
         placeholder="Entrez votre nom"
-        value="Doe"
       />
     </div>
     <div class="mb-3">
@@ -23,7 +25,6 @@
         class="form-control"
         id="PrenomInput"
         placeholder="Entrez votre prénom"
-        value="John"
       />
     </div>
     <div class="mb-3">
@@ -33,7 +34,6 @@
         class="form-control"
         id="AllergieInput"
         placeholder="Entrez vos allergies (fruits de mer, arachides...)"
-        value="Cacahouettes"
       />
     </div>
     <div class="mb-3">
@@ -45,7 +45,6 @@
         class="form-control"
         id="NbConvivesInput"
         placeholder="Entrez le nombre de convives habituel"
-        value="4"
       />
     </div>
     <div class="text-center">

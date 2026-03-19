@@ -24,6 +24,17 @@ const getRouteByUrl = (url) => {
 
 // Fonction pour charger le contenu de la page
 const LoadContentPage = async () => {
+  // Nettoyer proprement la page précédente (listeners, timers, etc.)
+  if (typeof globalThis.__pageCleanup === "function") {
+    try {
+      globalThis.__pageCleanup();
+    } catch (error) {
+      console.error("Erreur pendant le nettoyage de page:", error);
+    } finally {
+      globalThis.__pageCleanup = undefined;
+    }
+  }
+
   // Extraire la route du hash (#/route) ou utiliser "/" par défaut
   const hash = window.location.hash.slice(1) || "/";
   // Récupération de l'URL actuelle
@@ -78,7 +89,10 @@ const LoadContentPage = async () => {
 
         // Attendre que le script soit chargé avant de continuer
         scriptTag.onload = () => resolve();
-        scriptTag.onerror = () => resolve(); // Continuer même en cas d'erreur
+        scriptTag.onerror = () => {
+          console.error(`Impossible de charger le script: ${scriptTag.src}`);
+          resolve(); // Continuer même en cas d'erreur
+        };
 
         // Ajout de la balise script au corps du document
         document.querySelector("body").appendChild(scriptTag);

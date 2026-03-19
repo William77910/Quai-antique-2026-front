@@ -72,6 +72,7 @@ function initAdminPage(tryCount = 0) {
   let allUsers = [];
   let allFoods = [];
   let allCategories = [];
+  let isDangerModalOpen = false;
   const cleanups = [];
 
   const registerCleanup = (cleanupFn) => {
@@ -215,11 +216,18 @@ function initAdminPage(tryCount = 0) {
 
   const openDangerConfirmModal = (message) => {
     return new Promise((resolve) => {
+      if (isDangerModalOpen) {
+        resolve(false);
+        return;
+      }
+
       const ModalClass = getBootstrapModalClass();
       if (!ModalClass) {
         resolve(false);
         return;
       }
+
+      isDangerModalOpen = true;
 
       const modalId = `adminDangerModal-${Date.now()}`;
       const wrapper = document.createElement("div");
@@ -261,6 +269,7 @@ function initAdminPage(tryCount = 0) {
       });
 
       modalEl.addEventListener("hidden.bs.modal", () => {
+        isDangerModalOpen = false;
         if (!settled) {
           resolve(false);
         }

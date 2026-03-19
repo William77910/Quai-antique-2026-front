@@ -37,6 +37,28 @@
       <div class="invalid-feedback">Le mail n'est pas au bon format</div>
     </div>
     <div class="mb-3">
+      <label for="GuestNumberInput" class="form-label">Nombre de couverts</label>
+      <input
+        type="number"
+        class="form-control"
+        id="GuestNumberInput"
+        placeholder="Ex: 2"
+        name="guestNumber"
+        min="1"
+      />
+      <div class="invalid-feedback">Le nombre de couverts doit etre superieur ou egal a 1</div>
+    </div>
+    <div class="mb-3">
+      <label for="AllergyInput" class="form-label">Allergies (optionnel)</label>
+      <input
+        type="text"
+        class="form-control"
+        id="AllergyInput"
+        placeholder="Ex: Arachides"
+        name="allergy"
+      />
+    </div>
+    <div class="mb-3">
       <label for="PasswordInput" class="form-label">Mot de passe</label>
       <input
         type="password"

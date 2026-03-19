@@ -26,6 +26,14 @@ function initAccountPage(tryCount = 0) {
 		return;
 	}
 
+	// Évite les doubles listeners si initAccountPage est appelée plusieurs fois.
+	if (accountForm.dataset.initialized === "1") {
+		return;
+	}
+	accountForm.dataset.initialized = "1";
+
+	let isDeletingAccount = false;
+
 	const setStatus = (message, type = "info") => {
 		if (!accountStatus) {
 			return;
@@ -101,6 +109,10 @@ function initAccountPage(tryCount = 0) {
 	});
 
 	deleteAccountBtn.addEventListener("click", async () => {
+		if (isDeletingAccount) {
+			return;
+		}
+
 		const confirmed = globalThis.confirm("Voulez-vous vraiment supprimer votre compte ? Cette action est definitive.");
 		if (!confirmed) {
 			return;
@@ -113,6 +125,7 @@ function initAccountPage(tryCount = 0) {
 		}
 
 		setStatus("Suppression du compte en cours...", "info");
+		isDeletingAccount = true;
 		deleteAccountBtn.disabled = true;
 
 		try {
@@ -125,6 +138,7 @@ function initAccountPage(tryCount = 0) {
 
 			if (!response.ok) {
 				setStatus("Échec de la suppression du compte.", "error");
+				isDeletingAccount = false;
 				deleteAccountBtn.disabled = false;
 				return;
 			}
@@ -139,6 +153,7 @@ function initAccountPage(tryCount = 0) {
 		} catch (error) {
 			console.error(error);
 			setStatus("Erreur réseau pendant la suppression du compte.", "error");
+			isDeletingAccount = false;
 			deleteAccountBtn.disabled = false;
 		}
 	});

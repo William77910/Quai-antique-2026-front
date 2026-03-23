@@ -27,6 +27,7 @@ function initAdminPage(tryCount = 0) {
   const addFoodBtn = document.getElementById("addFoodBtn");
   const addCategoryBtn = document.getElementById("addCategoryBtn");
 
+  // Si les éléments ne sont pas encore disponibles, réessayer après un court délai (max 10 tentatives)
   if (
     !adminPageRoot ||
     !adminEmail ||

@@ -171,6 +171,7 @@ async function getInfosUser(){
       return null;
     }
 
+      // Vérifier que la réponse est bien du JSON
     return await response.json();
   } catch (error) {
     console.error("Erreur lors de la récupérations des données utilisateur", error);

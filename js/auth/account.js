@@ -8,6 +8,7 @@ function initAccountPage(tryCount = 0) {
 	const accountStatus = document.getElementById("accountStatus");
 	const accountApiInfo = document.getElementById("accountApiInfo");
 
+	// Si les éléments ne sont pas encore disponibles, réessayer après un court délai (max 10 tentatives)
 	if (
 		!accountForm ||
 		!nomInput ||
@@ -21,7 +22,7 @@ function initAccountPage(tryCount = 0) {
 		}
 		return;
 	}
-
+	// Vérifie que les fonctions nécessaires sont disponibles avant de continuer
 	if (typeof getInfosUser !== "function" || typeof getToken !== "function") {
 		return;
 	}
@@ -51,10 +52,12 @@ function initAccountPage(tryCount = 0) {
 		accountStatus.textContent = message;
 	};
 
+	// Affiche l'URL de l'API utilisée pour aider au debug et éviter les confusions en cas de mauvais paramétrage
 	if (accountApiInfo) {
 		accountApiInfo.textContent = `API utilisée: ${globalThis.apiUrl || "(non définie)"}`;
 	}
 
+	// Charger les données utilisateur depuis l'API pour pré-remplir le formulaire
 	getInfosUser().then((user) => {
 		if (!user) {
 			setStatus("Impossible de charger vos données depuis l'API.", "error");
@@ -68,6 +71,7 @@ function initAccountPage(tryCount = 0) {
 		setStatus("Données chargées depuis l'API.", "success");
 	});
 
+	// Listener pour la soumission du formulaire de mise à jour du compte
 	accountForm.addEventListener("submit", async (event) => {
 		event.preventDefault();
 

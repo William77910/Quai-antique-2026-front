@@ -1,3 +1,4 @@
+//cette fonction gère la page d'administration, elle est appelée dans admin.html
 function initAdminPage(tryCount = 0) {
   const adminPageRoot = document.getElementById("adminPageRoot");
   const adminEmail = document.getElementById("adminEmail");
@@ -81,7 +82,7 @@ function initAdminPage(tryCount = 0) {
       cleanups.push(cleanupFn);
     }
   };
-
+// Méthode pour charger le contenu de la page en fonction de la route
   globalThis.__pageCleanup = () => {
     while (cleanups.length > 0) {
       const cleanupFn = cleanups.pop();
@@ -101,6 +102,7 @@ function initAdminPage(tryCount = 0) {
     };
   };
 
+  // Méthode pour afficher un message de statut dans la page d'administration
   const setStatus = (element, message, type = "muted") => {
     element.classList.remove("text-muted", "text-danger", "text-success");
     if (type === "error") {
